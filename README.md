@@ -10,7 +10,7 @@ In this project, a extraction-transfer-load pipeline for a data warehouse is bui
 5. time, a dimension table that lists the units of time (hours, minutes etc.) for each timestamp in the fact table, extracted from log data
 
 ## Project files and running the project
-The relevant files for submission are `sql_queries.py` and `iac_create_cluster.ipynb`. `create_tables.py` and `etl.py` were provided and not altered. I split this project into two parts.
+The relevant files for submission are `sql_queries.py` and `iac_create_cluster.ipynb`. `create_tables.py` and `etl.py` were provided and not altered (except for adding docstrings). I split this project into two parts.
 
 In the first part, the cloud infrastructure is created via IaC. For this, the Jupyter notebook `iac_create_cluster.ipynb` provides the necessary functions to *create* an IAM role and a Redshift cluster. Further, the notebook generates a file `dwh.cfg` which is used by the main scripts to identify the IAM arn and the cluster endpoint. The notebook also provides functions to *query* and *delete* the cluster. 
 
