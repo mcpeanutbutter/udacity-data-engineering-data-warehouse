@@ -2,8 +2,10 @@ import configparser
 
 
 # CONFIG
+
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
+
 
 # DROP TABLES
 
@@ -14,6 +16,7 @@ user_table_drop = "DROP TABLE IF EXISTS users"
 song_table_drop = "DROP TABLE IF EXISTS songs"
 artist_table_drop = "DROP TABLE IF EXISTS artists"
 time_table_drop = "DROP TABLE IF EXISTS time"
+
 
 # CREATE TABLES
 
@@ -44,8 +47,8 @@ CREATE TABLE staging_events
 staging_songs_table_create = ("""
 CREATE TABLE staging_songs
 (
-    num_songs INTEGER NOT NULL,
-    artist_id VARCHAR(20) NOT NULL,
+    num_songs INTEGER,
+    artist_id VARCHAR(20),
     artist_latitude NUMERIC(9,6), 
     artist_longitude NUMERIC(9,6),
     artist_location VARCHAR(256),
@@ -85,7 +88,7 @@ CREATE TABLE users
     level VARCHAR(8) ENCODE BYTEDICT NOT NULL
 )
 DISTSTYLE ALL
-SORTKEY (user_id);
+SORTKEY ( user_id );
 """)
 
 song_table_create = ("""
@@ -98,7 +101,7 @@ CREATE TABLE songs
     duration NUMERIC(8,4) NOT NULL
 )
 DISTSTYLE ALL
-SORTKEY (song_id);
+SORTKEY ( song_id );
 """)
 
 artist_table_create = ("""
@@ -111,7 +114,7 @@ CREATE TABLE artists
     longitude NUMERIC(9,6)
 )
 DISTSTYLE ALL
-SORTKEY (artist_id);
+SORTKEY ( artist_id );
 """)
 
 time_table_create = ("""
@@ -127,8 +130,9 @@ CREATE TABLE time
 )
 DISTSTYLE KEY
 DISTKEY ( start_time )
-SORTKEY (start_time);
+SORTKEY ( start_time );
 """)
+
 
 # STAGING TABLES
 
@@ -145,6 +149,7 @@ FROM {}
 CREDENTIALS 'aws_iam_role={}' 
 FORMAT AS JSON 'auto' REGION 'us-west-2';
 """).format(config['S3']['song_data'], config['IAM_ROLE']['arn'])
+
 
 # FINAL TABLES
 
@@ -214,6 +219,7 @@ SELECT DISTINCT
     to_char(start_time, 'Day') AS weekday
 FROM staging_events;
 """)
+
 
 # QUERY LISTS
 
